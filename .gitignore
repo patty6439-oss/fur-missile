@@ -1,0 +1,28 @@
+$# macOS
+.DS_Store
+
+# Environment variables / secrets
+.env
+**/.env
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+staticfiles/
+
+# Node / Vite
+node_modules/
+dist/
+coverage/
+
+# Cypress generated output
+cypress/videos/
+cypress/screenshots/
+
+# Editors
+.vscode/
+.idea/
