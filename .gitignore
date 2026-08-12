@@ -26,3 +26,11 @@ cypress/screenshots/
 # Editors
 .vscode/
 .idea/
+
+frontend/node_modules/ 
+frontend/dist/ 
+frontend/cypress/videos/ 
+frontend/cypress/screenshots/ 
+ 
+backend/staticfiles/ 
+backend/media/
