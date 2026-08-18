@@ -10,20 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from datetime import timedelta
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u!eyaaf-koej99$2&s18ip_8jnr!i&59rmk@&zs^&g$1t*pv^_'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "unsafe-development-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true" 
 
 ALLOWED_HOSTS = []
 
@@ -37,10 +43,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Add these BELOW the Django-generated apps: 
+    "rest_framework", 
+    "rest_framework.authtoken", 
+    "rest_framework_simplejwt.token_blacklist",
+    "corsheaders", 
+    "accounts", 
+    "dogs", 
+    "missions",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware", 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -125,3 +140,28 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+CORS_ALLOWED_ORIGINS = [ 
+    "http://localhost:5173", 
+] 
+ 
+CORS_ALLOW_CREDENTIALS = True
+
+
+REST_FRAMEWORK = { 
+    "DEFAULT_AUTHENTICATION_CLASSES": [ 
+        "accounts.authentication.CookieJWTAuthentication", 
+    ], 
+    "DEFAULT_PERMISSION_CLASSES": [ 
+        "rest_framework.permissions.IsAuthenticated", 
+    ], 
+} 
+ 
+SIMPLE_JWT = { 
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15), 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1), 
+    "ROTATE_REFRESH_TOKENS": True, 
+    "BLACKLIST_AFTER_ROTATION": True, 
+    "AUTH_HEADER_TYPES": ("Bearer",), 
+} 
+
+AUTH_USER_MODEL = "accounts.User"
