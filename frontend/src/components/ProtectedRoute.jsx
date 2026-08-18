@@ -1,36 +1,37 @@
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import api from "../api/api";
+import { Navigate, Outlet } from "react-router-dom" 
 
-function ProtectedRoute({ children }) {
-  const [status, setStatus] = useState("checking");
+  
 
-  useEffect(() => {
-    let active = true;
+import { useAuth } from "./AuthContext" 
 
-    api
-      .get("users/info/")
-      .then(() => {
-        if (active) setStatus("allowed");
-      })
-      .catch(() => {
-        if (active) setStatus("denied");
-      });
+  
 
-    return () => {
-      active = false;
-    };
-  }, []);
+const ProtectedRoute = () => { 
 
-  if (status === "checking") {
-    return <p>Checking session...</p>;
-  }
+  const { user, loading } = useAuth() 
 
-  if (status === "denied") {
-    return <Navigate to="/login" replace />;
-  }
+  
 
-  return children;
-}
+  if (loading) { 
 
-export default ProtectedRoute;
+    return <p>Checking handler credentials...</p> 
+
+  } 
+
+  
+
+  if (!user) { 
+
+    return <Navigate to="/login" replace /> 
+
+  } 
+
+  
+
+  return <Outlet /> 
+
+} 
+
+  
+
+export default ProtectedRoute 
