@@ -1,13 +1,21 @@
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication 
 
+  
 
-class CookieJWTAuthentication(JWTAuthentication):
-    def authenticate(self, request):
-        raw_token = request.COOKIES.get("access")
+  
 
-        if raw_token is None:
-            return None
+class CookieJWTAuthentication(JWTAuthentication): 
 
-        validated_token = self.get_validated_token(raw_token)
+    """Authenticate normal API requests from the Authorization header. 
 
-        return self.get_user(validated_token), validated_token
+  
+
+    The refresh token is intentionally NOT read here. It stays in an 
+
+    HttpOnly cookie and is used only by the refresh endpoint. 
+
+    """ 
+
+  
+
+    pass 

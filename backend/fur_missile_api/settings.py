@@ -31,7 +31,21 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "unsafe-development-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true" 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 
+
+    host.strip() 
+
+    for host in os.getenv( 
+
+        "DJANGO_ALLOWED_HOSTS", 
+
+        "localhost,127.0.0.1" 
+
+    ).split(",") 
+
+    if host.strip() 
+
+] 
 
 
 # Application definition
@@ -142,9 +156,30 @@ MAILERS = {
 }
 CORS_ALLOWED_ORIGINS = [ 
     "http://localhost:5173", 
+    "http://127.0.0.1:5173",
 ] 
  
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [ 
+
+    "http://localhost:5173", 
+
+    "http://127.0.0.1:5173", 
+
+] 
+
+  
+
+AUTH_COOKIE_NAME = "refresh_token" 
+
+AUTH_COOKIE_MAX_AGE = 60 * 60 * 24 * 7 
+
+AUTH_COOKIE_SECURE = not DEBUG 
+
+AUTH_COOKIE_HTTP_ONLY = True 
+
+AUTH_COOKIE_SAMESITE = "Lax" 
 
 
 REST_FRAMEWORK = { 
@@ -158,10 +193,10 @@ REST_FRAMEWORK = {
  
 SIMPLE_JWT = { 
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15), 
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1), 
-    "ROTATE_REFRESH_TOKENS": True, 
-    "BLACKLIST_AFTER_ROTATION": True, 
-    "AUTH_HEADER_TYPES": ("Bearer",), 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7), 
+    "ROTATE_REFRESH_TOKENS": False, 
+    "BLACKLIST_AFTER_ROTATION": False, 
+    
 } 
 
 AUTH_USER_MODEL = "accounts.User"
