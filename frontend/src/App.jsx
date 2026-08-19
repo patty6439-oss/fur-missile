@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom" 
+import "./App.css";
 
   
 import Navbar from "./components/Navbar"
@@ -17,6 +18,8 @@ import MissionsPage from "./pages/MissionsPage"
 
 import NotFoundPage from "./pages/NotFoundPage" 
 
+import MissionDetail from "./pages/MissionDetail";
+
   
 
 function App() {
@@ -31,10 +34,14 @@ function App() {
 
         <Route path="/register" element={<RegisterPage />} />
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dogs" element={<DogsPage />} />
-          <Route path="/missions" element={<MissionsPage />} />
-        </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dogs" element={<DogsPage />} />
+        <Route path="/missions" element={<MissionsPage />} />
+        <Route
+          path="/missions/:missionId"
+          element={<MissionDetail />}
+        />
+      </Route>
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

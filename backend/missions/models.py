@@ -55,6 +55,8 @@ class TrainingMission(models.Model):
     location = models.CharField(max_length=150) 
 
     mission_date = models.DateField() 
+    
+    mission_time = models.TimeField(null=True, blank=True)
 
     status = models.CharField( 
 

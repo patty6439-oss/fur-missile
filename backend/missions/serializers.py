@@ -27,6 +27,8 @@ class TrainingMissionSerializer(serializers.ModelSerializer):
             "location", 
 
             "mission_date", 
+            
+            "mission_time",
 
             "status", 
 

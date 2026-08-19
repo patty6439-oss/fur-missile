@@ -34,3 +34,4 @@ frontend/cypress/screenshots/
  
 backend/staticfiles/ 
 backend/media/
+backend/db.sqlite3
