@@ -21,6 +21,7 @@ function Navbar() {
       <Link to="/">Fur Missile</Link>{" "}
 
       {user && <Link to="/dogs">Dogs</Link>}{" "}
+      {user && <Link to="/training">Training</Link>}{" "}
       {user && <Link to="/missions">Missions</Link>}{" "}
 
       {!user && <Link to="/login">Login</Link>}{" "}

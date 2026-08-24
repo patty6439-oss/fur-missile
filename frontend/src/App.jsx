@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom" 
+
 import "./App.css";
 
-  
 import Navbar from "./components/Navbar"
 
 import ProtectedRoute from "./components/ProtectedRoute" 
@@ -20,6 +20,10 @@ import NotFoundPage from "./pages/NotFoundPage"
 
 import MissionDetail from "./pages/MissionDetail";
 
+import DogDetail from "./pages/DogDetail";
+
+import TrainingPage from "./pages/TrainingPage";
+
   
 
 function App() {
@@ -36,11 +40,15 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/dogs" element={<DogsPage />} />
+
+        <Route path="/dogs/:dogId" element={<DogDetail />} />
+
         <Route path="/missions" element={<MissionsPage />} />
-        <Route
-          path="/missions/:missionId"
-          element={<MissionDetail />}
-        />
+
+        <Route path="/missions/:missionId" element={<MissionDetail />} />
+
+        <Route path="/training" element={<TrainingPage />} />
+        
       </Route>
 
         <Route path="*" element={<NotFoundPage />} />

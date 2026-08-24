@@ -10,8 +10,10 @@ function MissionDetail() {
   const navigate = useNavigate();
 
   const [mission, setMission] = useState(null);
+  const [dogs, setDogs] = useState([]);
 
   const [form, setForm] = useState({
+    dog: "",
     title: "",
     mission_type: "",
     location: "",
@@ -25,9 +27,14 @@ function MissionDetail() {
   const loadMission = useCallback(async () => {
     const response = await api.get(`/missions/${missionId}/`);
 
+    const dogResponse = await api.get("/dogs/");
+
     setMission(response.data);
 
+    setDogs(dogResponse.data);
+
     setForm({
+      dog: response.data.dog || "",
       title: response.data.title || "",
       mission_type: response.data.mission_type || "",
       location: response.data.location || "",
@@ -56,7 +63,10 @@ function MissionDetail() {
 
     const response = await api.patch(
       `/missions/${missionId}/`,
-      form
+      {
+        ...form,
+        dog: form.dog ? Number(form.dog) : null,
+      }
     );
 
     setMission(response.data);
@@ -79,11 +89,16 @@ function MissionDetail() {
     return <p>Loading mission...</p>;
   }
 
+  const assignedDog = dogs.find(
+    (dog) => dog.id === mission.dog
+  );
+
   return (
     <section>
       <h1>{mission.title}</h1>
 
       <div>
+      <p>Assigned Dog: {assignedDog ? assignedDog.name : "None"}</p>
         <p>Location: {mission.location}</p>
         <p>Date: {mission.mission_date}</p>
 
@@ -95,6 +110,21 @@ function MissionDetail() {
       </div>
 
       <form onSubmit={updateMission}>
+
+      <select
+        name="dog"
+        value={form.dog}
+        onChange={handleChange}
+      >
+        <option value="">No dog assigned</option>
+
+        {dogs.map((dog) => (
+          <option key={dog.id} value={dog.id}>
+            {dog.name}
+        </option>
+        ))}
+      </select>
+
         <input
           name="title"
           value={form.title}
