@@ -10,6 +10,10 @@ function DogDetail() {
 
   const [dog, setDog] = useState(null);
 
+  const [updateError, setUpdateError] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+
   const [form, setForm] = useState({
     name: "",
     breed: "",
@@ -18,6 +22,7 @@ function DogDetail() {
     call_sign: "",
     notes: "",
   });
+
 
   const loadDog = useCallback(async () => {
     const response = await api.get(`/dogs/${dogId}/`);
@@ -34,10 +39,12 @@ function DogDetail() {
     });
   }, [dogId]);
 
+
   useEffect(() => {
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  loadDog();
-}, [loadDog]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDog();
+  }, [loadDog]);
+
 
   function handleChange(event) {
     setForm({
@@ -46,43 +53,83 @@ function DogDetail() {
     });
   }
 
+
   async function updateDog(event) {
     event.preventDefault();
 
-    const response = await api.patch(
-      `/dogs/${dogId}/`,
-      {
-        ...form,
-        age: Number(form.age),
-      }
-    );
+    setUpdateError("");
+    setUpdateSuccess("");
 
-    setDog(response.data);
+    try {
+      const response = await api.patch(
+        `/dogs/${dogId}/`,
+        {
+          ...form,
+          age: Number(form.age),
+        }
+      );
+
+      setDog(response.data);
+      setUpdateSuccess("Dog updated successfully.");
+    } catch (error) {
+      console.error("Dog update failed:", error);
+
+      setUpdateError(
+        "Dog update failed. Please try again."
+      );
+    }
   }
+
 
   async function deleteDog() {
-    await api.delete(`/dogs/${dogId}/`);
-    navigate("/dogs");
+    setDeleteError("");
+
+    try {
+      await api.delete(`/dogs/${dogId}/`);
+      navigate("/dogs");
+    } catch (error) {
+      console.error("Dog deletion failed:", error);
+
+      setDeleteError(
+        "Dog deletion failed. Please try again."
+      );
+    }
   }
+
 
   if (!dog) {
     return <p>Loading dog...</p>;
   }
+
 
   return (
     <section>
       <h1>{dog.name}</h1>
 
       <div>
-        <p>Breed: {dog.breed}</p>
-        <p>Role: {dog.role}</p>
-        <p>Age: {dog.age}</p>
-        <p>Call sign: {dog.call_sign || "None"}</p>
+        <p>
+          Breed: {dog.breed}
+        </p>
+
+        <p>
+          Role: {dog.role}
+        </p>
+
+        <p>
+          Age: {dog.age}
+        </p>
+
+        <p>
+          Call sign: {dog.call_sign || "None"}
+        </p>
 
         {dog.notes && (
-          <p>Notes: {dog.notes}</p>
+          <p>
+            Notes: {dog.notes}
+          </p>
         )}
       </div>
+
 
       <form onSubmit={updateDog}>
         <input
@@ -138,7 +185,31 @@ function DogDetail() {
         </button>
       </form>
 
-      <button onClick={deleteDog}>
+
+      {updateSuccess && (
+        <p className="message success-message">
+          {updateSuccess}
+        </p>
+      )}
+
+      {updateError && (
+        <p className="message error-message">
+          {updateError}
+        </p>
+      )}
+
+
+      {deleteError && (
+        <p className="message error-message">
+          {deleteError}
+        </p>
+      )}
+
+
+      <button
+        className="danger-button"
+        onClick={deleteDog}
+      >
         Delete Dog
       </button>
     </section>

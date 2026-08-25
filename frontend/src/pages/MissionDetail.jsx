@@ -12,6 +12,13 @@ function MissionDetail() {
   const [mission, setMission] = useState(null);
   const [dogs, setDogs] = useState([]);
 
+  const [badgeError, setBadgeError] = useState("");
+  const [badgeLoading, setBadgeLoading] = useState(false);
+
+  const [updateError, setUpdateError] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+
   const [form, setForm] = useState({
     dog: "",
     title: "",
@@ -24,13 +31,13 @@ function MissionDetail() {
     notes: "",
   });
 
+
   const loadMission = useCallback(async () => {
     const response = await api.get(`/missions/${missionId}/`);
 
     const dogResponse = await api.get("/dogs/");
 
     setMission(response.data);
-
     setDogs(dogResponse.data);
 
     setForm({
@@ -46,10 +53,12 @@ function MissionDetail() {
     });
   }, [missionId]);
 
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadMission();
   }, [loadMission]);
+
 
   function handleChange(event) {
     setForm({
@@ -58,72 +67,130 @@ function MissionDetail() {
     });
   }
 
+
   async function updateMission(event) {
     event.preventDefault();
 
-    const response = await api.patch(
-      `/missions/${missionId}/`,
-      {
-        ...form,
-        dog: form.dog ? Number(form.dog) : null,
-      }
-    );
+    setUpdateError("");
+    setUpdateSuccess("");
 
-    setMission(response.data);
+    try {
+      const response = await api.patch(
+        `/missions/${missionId}/`,
+        {
+          ...form,
+          dog: form.dog ? Number(form.dog) : null,
+        }
+      );
+
+      setMission(response.data);
+      setUpdateSuccess("Mission updated successfully.");
+    } catch (error) {
+      console.error("Mission update failed:", error);
+
+      setUpdateError(
+        "Mission update failed. Please try again."
+      );
+    }
   }
+
 
   async function deleteMission() {
-    await api.delete(`/missions/${missionId}/`);
-    navigate("/missions");
+    setDeleteError("");
+
+    try {
+      await api.delete(`/missions/${missionId}/`);
+      navigate("/missions");
+    } catch (error) {
+      console.error("Mission deletion failed:", error);
+
+      setDeleteError(
+        "Mission deletion failed. Please try again."
+      );
+    }
   }
+
 
   async function generateBadge() {
-    const response = await api.post(
-      `/missions/${missionId}/badge/`
-    );
+    setBadgeError("");
+    setBadgeLoading(true);
 
-    setMission(response.data.mission);
+    try {
+      const response = await api.post(
+        `/missions/${missionId}/badge/`
+      );
+
+      setMission(response.data.mission);
+    } catch (error) {
+      console.error("Badge generation failed:", error);
+
+      setBadgeError(
+        "Badge generation failed. Please try again later."
+      );
+    } finally {
+      setBadgeLoading(false);
+    }
   }
+
 
   if (!mission) {
     return <p>Loading mission...</p>;
   }
 
+
   const assignedDog = dogs.find(
     (dog) => dog.id === mission.dog
   );
+
 
   return (
     <section>
       <h1>{mission.title}</h1>
 
       <div>
-      <p>Assigned Dog: {assignedDog ? assignedDog.name : "None"}</p>
-        <p>Location: {mission.location}</p>
-        <p>Date: {mission.mission_date}</p>
+        <p>
+          Assigned Dog: {assignedDog ? assignedDog.name : "None"}
+        </p>
+
+        <p>
+          Location: {mission.location}
+        </p>
+
+        <p>
+          Date: {mission.mission_date}
+        </p>
 
         {mission.mission_time && (
-          <p>Time: {mission.mission_time}</p>
-      )}
+          <p>
+            Time: {mission.mission_time}
+          </p>
+        )}
 
-        <p>Status: {mission.status}</p>
+        <p>
+          Status:{" "}
+          <span className={`status-pill status-${mission.status}`}>
+            {mission.status}
+          </span>
+        </p>
       </div>
 
+
       <form onSubmit={updateMission}>
+        <select
+          name="dog"
+          value={form.dog}
+          onChange={handleChange}
+        >
+          <option value="">
+            No dog assigned
+          </option>
 
-      <select
-        name="dog"
-        value={form.dog}
-        onChange={handleChange}
-      >
-        <option value="">No dog assigned</option>
-
-        {dogs.map((dog) => (
-          <option key={dog.id} value={dog.id}>
-            {dog.name}
-        </option>
-        ))}
-      </select>
+          {dogs.map((dog) => (
+            <option key={dog.id} value={dog.id}>
+              {dog.name}
+            </option>
+          ))}
+        </select>
 
         <input
           name="title"
@@ -169,9 +236,17 @@ function MissionDetail() {
           value={form.status}
           onChange={handleChange}
         >
-          <option value="planned">Planned</option>
-          <option value="active">Active</option>
-          <option value="complete">Complete</option>
+          <option value="planned">
+            Planned
+          </option>
+
+          <option value="active">
+            Active
+          </option>
+
+          <option value="complete">
+            Complete
+          </option>
         </select>
 
         <textarea
@@ -189,31 +264,85 @@ function MissionDetail() {
           placeholder="Notes"
         />
 
-        <button type="submit">Update Mission</button>
+        <button type="submit">
+          Update Mission
+        </button>
       </form>
 
+
+      {updateSuccess && (
+        <p className="message success-message">
+          {updateSuccess}
+        </p>
+      )}
+
+      {updateError && (
+        <p className="message error-message">
+          {updateError}
+        </p>
+      )}
+
+
       <WeatherPanel location={mission.location} />
+
 
       <section>
         <h2>Mission Badge</h2>
 
         {mission.badge_name ? (
           <>
-            <h3>{mission.badge_name}</h3>
-            <p>{mission.badge_motto}</p>
-            <p>Colors: {mission.badge_colors}</p>
-            <p>Symbols: {mission.badge_symbols}</p>
+            <h3>
+              {mission.badge_name}
+            </h3>
+
+            <p>
+              {mission.badge_motto}
+            </p>
+
+            <p>
+              Colors: {mission.badge_colors}
+            </p>
+
+            <p>
+              Symbols: {mission.badge_symbols}
+            </p>
           </>
         ) : (
-          <p>No badge generated yet.</p>
+          <p>
+            No badge generated yet.
+          </p>
         )}
 
-        <button onClick={generateBadge}>
-          Generate Badge
+
+        {badgeError && (
+          <p className="message error-message">
+            {badgeError}
+          </p>
+        )}
+
+
+        <button
+          onClick={generateBadge}
+          disabled={badgeLoading}
+        >
+          {badgeLoading
+            ? "Generating Badge..."
+            : "Generate Badge"}
         </button>
       </section>
 
-      <button onClick={deleteMission}>
+
+      {deleteError && (
+        <p className="message error-message">
+          {deleteError}
+        </p>
+      )}
+
+
+      <button
+        className="danger-button"
+        onClick={deleteMission}
+      >
         Delete Mission
       </button>
     </section>

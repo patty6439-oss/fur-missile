@@ -21,6 +21,7 @@ function MissionsPage() {
     notes: "",
   });
 
+
   async function loadData() {
     const [missionResponse, dogResponse] = await Promise.all([
       api.get("/missions/"),
@@ -31,10 +32,12 @@ function MissionsPage() {
     setDogs(dogResponse.data);
   }
 
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, []);
+
 
   function handleChange(event) {
     setForm({
@@ -42,6 +45,7 @@ function MissionsPage() {
       [event.target.name]: event.target.value,
     });
   }
+
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -66,9 +70,12 @@ function MissionsPage() {
     loadData();
   }
 
+
   return (
     <section>
-      <h1>Training Missions</h1>
+      <h1>Missions</h1>
+
+      <h2>Create Mission</h2>
 
       <form onSubmit={handleSubmit}>
         <select
@@ -149,39 +156,49 @@ function MissionsPage() {
           onChange={handleChange}
         />
 
-        <button type="submit">Create Mission</button>
+        <button type="submit">
+          Create Mission
+        </button>
       </form>
 
-      {missions.map((mission) => (
-        <article key={mission.id}>
-          <h2>
-            <Link to={`/missions/${mission.id}`}>
-              {mission.title}
-            </Link>
-          </h2>
 
-          <p>{mission.location}</p>
+      <h2>Your Missions</h2>
 
-          <p>
-            Date: {mission.mission_date}
-          </p>
+      <div className="card-grid">
+        {missions.map((mission) => (
+          <article key={mission.id}>
+            <h2>
+              <Link to={`/missions/${mission.id}`}>
+                {mission.title}
+              </Link>
+            </h2>
 
-          {mission.mission_time && (
+            <p>{mission.location}</p>
+
             <p>
-              Time: {mission.mission_time}
+              Date: {mission.mission_date}
             </p>
-          )}
 
-          <p>
-            Status: {mission.status}
-          </p>
+            {mission.mission_time && (
+              <p>
+                Time: {mission.mission_time}
+              </p>
+            )}
 
-          <WeatherPanel
-            location={mission.location}
-            compact
-          />
-        </article>
-      ))}
+            <p>
+              Status:{" "}
+              <span className={`status-pill status-${mission.status}`}>
+                  {mission.status}
+                </span>
+              </p>
+
+            <WeatherPanel
+              location={mission.location}
+              compact
+            />
+          </article>
+        ))}
+      </div>
     </section>
   );
 }

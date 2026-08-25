@@ -29,10 +29,27 @@ function Home() {
             check mission weather, and generate mission badges.
           </p>
 
-          <p>
-            <Link to="/login">Login</Link>{" "}
-            <Link to="/register">Register</Link>
-          </p>
+          <div className="home-actions">
+            <Link
+              className="home-action-card"
+              to="/login"
+            >
+              <h2>Login</h2>
+              <p>
+                Return to your working dogs, training, and missions.
+              </p>
+            </Link>
+
+            <Link
+              className="home-action-card"
+              to="/register"
+            >
+              <h2>Register</h2>
+              <p>
+                Create an account and start managing your K9 team.
+              </p>
+            </Link>
+          </div>
         </div>
       )}
 
@@ -42,11 +59,37 @@ function Home() {
             Welcome back. Choose where you want to continue.
           </p>
 
-          <p>
-            <Link to="/dogs">Dogs</Link>{" "}
-            <Link to="/training">Training</Link>{" "}
-            <Link to="/missions">Missions</Link>
-          </p>
+          <div className="home-actions">
+            <Link
+              className="home-action-card"
+              to="/dogs"
+            >
+              <h2>Dogs</h2>
+              <p>
+                View, add, and manage your working dogs.
+              </p>
+            </Link>
+
+            <Link
+              className="home-action-card"
+              to="/training"
+            >
+              <h2>Training</h2>
+              <p>
+                Review training categories, commands, and progress.
+              </p>
+            </Link>
+
+            <Link
+              className="home-action-card"
+              to="/missions"
+            >
+              <h2>Missions</h2>
+              <p>
+                Plan missions, assign dogs, and check mission weather.
+              </p>
+            </Link>
+          </div>
         </div>
       )}
     </section>

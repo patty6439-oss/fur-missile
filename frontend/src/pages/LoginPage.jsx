@@ -15,12 +15,14 @@ function Login() {
 
   const [error, setError] = useState("");
 
+
   function handleChange(event) {
     setForm({
       ...form,
       [event.target.name]: event.target.value,
     });
   }
+
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -30,14 +32,19 @@ function Login() {
       await login(form);
       navigate("/dogs");
     } catch (err) {
-      setError("Login failed.");
+      setError("Login failed. Check your email and password.");
       console.error(err);
     }
   }
 
+
   return (
     <section>
       <h1>Login</h1>
+
+      <p>
+        Sign in to manage your working dogs, training, and missions.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -58,16 +65,26 @@ function Login() {
           required
         />
 
-        <button type="submit">Login</button>
+        <button type="submit">
+          Login
+        </button>
       </form>
 
-      {error && <p>{error}</p>}
+      {error && (
+        <p className="message error-message">
+          {error}
+        </p>
+      )}
 
       <p>
-        <Link to="/register">Need an account?</Link>
+        New to Fur Missile?{" "}
+        <Link to="/register">
+          Create an account
+        </Link>
       </p>
     </section>
   );
 }
+
 
 export default Login;

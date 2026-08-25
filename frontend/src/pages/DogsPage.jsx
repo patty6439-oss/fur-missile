@@ -80,6 +80,8 @@ function DogsPage() {
     <section>
       <h1>Working Dogs</h1>
 
+      <h2>Add Working Dog</h2>
+
       <form onSubmit={handleSubmit}>
         <input
           name="name"
@@ -135,58 +137,61 @@ function DogsPage() {
       </form>
 
 
-      {dogs.map((dog) => {
-        const assignedMissions = missions.filter(
-          (mission) => mission.dog === dog.id
-        );
+      <h2>Your Working Dogs</h2>
 
-        return (
-          <article key={dog.id}>
-            {getDogImage(dog) && (
-              <img
-                className="dog-image"
-                src={getDogImage(dog)}
-                alt={`${dog.name}, ${dog.breed}`}
-              />
-            )}
+      <div className="card-grid">
+        {dogs.map((dog) => {
+          const assignedMissions = missions.filter(
+            (mission) => mission.dog === dog.id
+          );
 
-            <h2>
-              <Link to={`/dogs/${dog.id}`}>
-                {dog.name}
-              </Link>
-            </h2>
+          return (
+            <article key={dog.id}>
+              {getDogImage(dog) && (
+                <img
+                  className="dog-image"
+                  src={getDogImage(dog)}
+                  alt={`${dog.name}, ${dog.breed}`}
+                />
+              )}
 
-            <p>
-              {dog.breed} - {dog.role}
-            </p>
+              <h2>
+                <Link to={`/dogs/${dog.id}`}>
+                  {dog.name}
+                </Link>
+              </h2>
 
-            <p>
-              Age: {dog.age}
-            </p>
+              <p>
+                {dog.breed} - {dog.role}
+              </p>
 
-            <p>
-              Call sign: {dog.call_sign || "None"}
-            </p>
+              <p>
+                Age: {dog.age}
+              </p>
 
+              <p>
+                Call sign: {dog.call_sign || "None"}
+              </p>
 
-            {assignedMissions.length > 0 ? (
-              <div>
-                <p>Assigned Missions:</p>
+              {assignedMissions.length > 0 ? (
+                <div>
+                  <p>Assigned Missions:</p>
 
-                {assignedMissions.map((mission) => (
-                  <p key={mission.id}>
-                     <Link to={`/missions/${mission.id}`}>
-                      {mission.title}
-                    </Link>
-                </p>
-            ))}
-              </div>
-            ) : (
-              <p>No missions assigned.</p>
-            )}
-          </article>
-        );
-      })}
+                  {assignedMissions.map((mission) => (
+                    <p key={mission.id}>
+                      <Link to={`/missions/${mission.id}`}>
+                        {mission.title}
+                      </Link>
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <p>No missions assigned.</p>
+              )}
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }

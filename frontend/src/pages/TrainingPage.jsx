@@ -2,6 +2,27 @@ import { Link } from "react-router-dom";
 
 
 function TrainingPage() {
+  const trainingCategories = [
+    "Obedience",
+    "Agility",
+    "Detection",
+    "Tracking",
+    "Search & Rescue",
+    "Protection",
+    "Therapy / Public Access",
+  ];
+
+  const commands = [
+    "Sit",
+    "Down",
+    "Stay",
+    "Heel",
+    "Come",
+    "Search",
+    "Track",
+  ];
+
+
   return (
     <section>
       <h1>K9 Training</h1>
@@ -11,19 +32,27 @@ function TrainingPage() {
         skills to work on missions.
       </p>
 
+
       <section>
         <h2>Training Categories</h2>
 
-        <ul>
-          <li>Obedience</li>
-          <li>Agility</li>
-          <li>Detection</li>
-          <li>Tracking</li>
-          <li>Search & Rescue</li>
-          <li>Protection</li>
-          <li>Therapy / Public Access</li>
-        </ul>
+        <p>
+          Working dogs can train across different disciplines depending
+          on their role and mission requirements.
+        </p>
+
+        <div className="training-grid">
+          {trainingCategories.map((category) => (
+            <div
+              className="training-card"
+              key={category}
+            >
+              {category}
+            </div>
+          ))}
+        </div>
       </section>
+
 
       <section>
         <h2>K9 Commands</h2>
@@ -33,34 +62,44 @@ function TrainingPage() {
           skills and abilities.
         </p>
 
-        <ul>
-          <li>Sit</li>
-          <li>Down</li>
-          <li>Stay</li>
-          <li>Heel</li>
-          <li>Come</li>
-          <li>Search</li>
-          <li>Track</li>
-        </ul>
+        <div className="training-grid">
+          {commands.map((command) => (
+            <div
+              className="training-card"
+              key={command}
+            >
+              {command}
+            </div>
+          ))}
+        </div>
       </section>
+
 
       <section>
         <h2>Dog Training Progress</h2>
 
         <p>
-          Individual dog training progress, skills, and statistics will
-          appear here.
+          Individual skill sheets and training progress tracking are planned
+          for a future game mode, where each working dog can build skills,
+          complete exercises, and improve abilities over time.
         </p>
 
-        <Link to="/dogs">View Working Dogs</Link>
+        <Link
+          className="action-link"
+          to="/dogs"
+        >
+          View Working Dogs
+        </Link>
       </section>
 
+
       <section>
-        <h2>Training Yard</h2>
+        <h2>Future Game Mode</h2>
 
         <p>
-          An interactive K9 training simulator is planned for future
-          development.
+          A future interactive training mode is planned where handlers can
+          train individual dogs, build skill sheets, complete exercises, and
+          prepare K9 teams for different mission types.
         </p>
       </section>
     </section>
