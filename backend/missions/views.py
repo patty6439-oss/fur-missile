@@ -167,6 +167,16 @@ class MissionBadge(APIView):
             owner=request.user,
         )
 
+        if mission.dog is None:
+            return Response(
+                {
+                    "error": (
+                        "Assign a working dog before generating a badge."
+                    )
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
             badge = generate_badge(mission)
 
@@ -187,12 +197,15 @@ class MissionBadge(APIView):
         mission.badge_colors = badge["badge_colors"]
         mission.badge_symbols = badge["badge_symbols"]
 
+        mission.badge_earned_by = mission.dog
+
         mission.save(
             update_fields=[
                 "badge_name",
                 "badge_motto",
                 "badge_colors",
                 "badge_symbols",
+                "badge_earned_by",
             ]
         )
 

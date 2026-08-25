@@ -13,6 +13,7 @@ import DogDetail from "./pages/DogDetail";
 import MissionsPage from "./pages/MissionsPage";
 import MissionDetail from "./pages/MissionDetail";
 import TrainingPage from "./pages/TrainingPage";
+import AwardsPage from "./pages/AwardsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 
@@ -42,6 +43,8 @@ function App() {
             />
 
             <Route path="/training" element={<TrainingPage />} />
+
+            <Route path="/awards" element={<AwardsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

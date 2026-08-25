@@ -611,3 +611,99 @@ main .action-link:hover {
     grid-template-columns: 1fr;
   }
 }
+.badge-display {
+  --badge-primary: #2f513f;
+  --badge-secondary: #ffffff;
+  --badge-accent: #ffffff;
+
+  width: min(300px, 90%);
+  aspect-ratio: 1 / 1.08;
+  margin: 1rem auto;
+  padding: 8px;
+
+  background: var(--badge-primary);
+
+  border: 5px solid var(--badge-secondary);
+  outline: 4px solid var(--badge-primary);
+
+  border-radius: 45% 45% 50% 50% / 35% 35% 60% 60%;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 3px var(--badge-accent);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-inner {
+  width: 88%;
+  height: 88%;
+  padding: 1rem;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  border-radius: 42% 42% 48% 48% / 32% 32% 58% 58%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  text-align: center;
+}
+
+.badge-k9-mark {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.badge-display h3 {
+  margin: 0.25rem 0;
+  font-size: 1.15rem;
+}
+
+.badge-motto {
+  margin: 0.4rem 0;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.badge-symbols {
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.badge-symbol {
+  min-width: 55px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.badge-symbol-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.badge-symbol-label {
+  font-size: 0.65rem;
+  line-height: 1.1;
+}
+
+.badge-footer {
+  padding-top: 0.3rem;
+
+  border-top: 2px solid var(--badge-primary);
+
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15rem;
+}

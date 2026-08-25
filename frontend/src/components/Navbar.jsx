@@ -23,6 +23,7 @@ function Navbar() {
       {user && <Link to="/dogs">Dogs</Link>}{" "}
       {user && <Link to="/training">Training</Link>}{" "}
       {user && <Link to="/missions">Missions</Link>}{" "}
+      {user && <Link to="/awards">Awards</Link>}{" "}
 
       {!user && <Link to="/login">Login</Link>}{" "}
       {!user && <Link to="/register">Register</Link>}{" "}
@@ -31,5 +32,6 @@ function Navbar() {
     </nav>
   );
 }
+
 
 export default Navbar;

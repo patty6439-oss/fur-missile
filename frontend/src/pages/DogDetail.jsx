@@ -2,6 +2,25 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import api from "../api/api";
+import BadgeDisplay from "../components/BadgeDisplay";
+
+import malinoisImage from "../assets/dogs/malinois.jpeg";
+import whiteLabImage from "../assets/dogs/white-lab.jpeg";
+
+
+function getDogImage(dog) {
+  const breed = dog.breed.toLowerCase();
+
+  if (breed.includes("malinois")) {
+    return malinoisImage;
+  }
+
+  if (breed.includes("lab")) {
+    return whiteLabImage;
+  }
+
+  return null;
+}
 
 
 function DogDetail() {
@@ -9,6 +28,7 @@ function DogDetail() {
   const navigate = useNavigate();
 
   const [dog, setDog] = useState(null);
+  const [missions, setMissions] = useState([]);
 
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState("");
@@ -18,6 +38,7 @@ function DogDetail() {
     name: "",
     breed: "",
     role: "",
+    gender: "",
     age: "",
     call_sign: "",
     notes: "",
@@ -25,17 +46,22 @@ function DogDetail() {
 
 
   const loadDog = useCallback(async () => {
-    const response = await api.get(`/dogs/${dogId}/`);
+    const [dogResponse, missionResponse] = await Promise.all([
+      api.get(`/dogs/${dogId}/`),
+      api.get("/missions/"),
+    ]);
 
-    setDog(response.data);
+    setDog(dogResponse.data);
+    setMissions(missionResponse.data);
 
     setForm({
-      name: response.data.name || "",
-      breed: response.data.breed || "",
-      role: response.data.role || "",
-      age: response.data.age || "",
-      call_sign: response.data.call_sign || "",
-      notes: response.data.notes || "",
+      name: dogResponse.data.name || "",
+      breed: dogResponse.data.breed || "",
+      role: dogResponse.data.role || "",
+      gender: dogResponse.data.gender || "",
+      age: dogResponse.data.age || "",
+      call_sign: dogResponse.data.call_sign || "",
+      notes: dogResponse.data.notes || "",
     });
   }, [dogId]);
 
@@ -102,9 +128,25 @@ function DogDetail() {
   }
 
 
+  const earnedBadgeMissions = missions.filter(
+    (mission) =>
+      mission.dog === dog.id &&
+      mission.badge_name
+  );
+
+
   return (
     <section>
       <h1>{dog.name}</h1>
+
+      {getDogImage(dog) && (
+        <img
+          className="dog-image"
+          src={getDogImage(dog)}
+          alt={`${dog.name}, ${dog.breed}`}
+        />
+      )}
+
 
       <div>
         <p>
@@ -113,6 +155,10 @@ function DogDetail() {
 
         <p>
           Role: {dog.role}
+        </p>
+
+        <p>
+          Gender: {dog.gender === "male" ? "Male" : "Female"}
         </p>
 
         <p>
@@ -156,6 +202,17 @@ function DogDetail() {
           required
         />
 
+        <select
+          name="gender"
+          value={form.gender}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
         <input
           name="age"
           type="number"
@@ -197,6 +254,29 @@ function DogDetail() {
           {updateError}
         </p>
       )}
+
+
+      <section>
+        <h2>Earned Mission Badges</h2>
+
+        {earnedBadgeMissions.length > 0 ? (
+          <div className="card-grid">
+            {earnedBadgeMissions.map((mission) => (
+              <div key={mission.id}>
+                <BadgeDisplay badge={mission} />
+
+                <p>
+                  Mission: {mission.title}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>
+            No mission badges earned yet.
+          </p>
+        )}
+      </section>
 
 
       {deleteError && (

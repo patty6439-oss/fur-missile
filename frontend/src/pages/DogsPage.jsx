@@ -11,6 +11,7 @@ const emptyDog = {
   name: "",
   breed: "",
   role: "",
+  gender: "",
   age: "",
   call_sign: "",
   notes: "",
@@ -107,6 +108,17 @@ function DogsPage() {
           required
         />
 
+        <select
+          name="gender"
+          value={form.gender}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
         <input
           name="age"
           type="number"
@@ -163,6 +175,10 @@ function DogsPage() {
 
               <p>
                 {dog.breed} - {dog.role}
+              </p>
+
+              <p>
+                Gender: {dog.gender === "male" ? "Male" : "Female"}
               </p>
 
               <p>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import api from "../api/api";
+import BadgeDisplay from "../components/BadgeDisplay";
 import WeatherPanel from "../components/WeatherPanel";
 
 
@@ -290,23 +291,7 @@ function MissionDetail() {
         <h2>Mission Badge</h2>
 
         {mission.badge_name ? (
-          <>
-            <h3>
-              {mission.badge_name}
-            </h3>
-
-            <p>
-              {mission.badge_motto}
-            </p>
-
-            <p>
-              Colors: {mission.badge_colors}
-            </p>
-
-            <p>
-              Symbols: {mission.badge_symbols}
-            </p>
-          </>
+          <BadgeDisplay badge={mission} />
         ) : (
           <p>
             No badge generated yet.
