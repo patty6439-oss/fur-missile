@@ -30,7 +30,7 @@ function Login() {
 
     try {
       await login(form);
-      navigate("/dogs");
+      navigate("/");
     } catch (err) {
       setError("Login failed. Check your email and password.");
       console.error(err);
