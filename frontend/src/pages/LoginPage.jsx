@@ -40,11 +40,13 @@ function Login() {
 
   return (
     <section>
-      <h1>Login</h1>
+      <div className="page-header">
+        <h1>Login</h1>
 
-      <p>
-        Sign in to manage your working dogs, training, and missions.
-      </p>
+        <p>
+          Sign in to manage your working dogs, training, and missions.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit}>
         <input

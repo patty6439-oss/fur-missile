@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { useAuth } from "../components/AuthContext";
 
-import trainingYard from "../assets/environments/training-yard.jpeg";
+import trainingYard from "../assets/environments/training-yard.jpg";
 
 
 function Home() {
@@ -10,16 +10,18 @@ function Home() {
 
   return (
     <section>
-      <h1>Fur Missile</h1>
+      <div className="page-header">
+        <h1>Fur Missile</h1>
 
-      <p>
-        K9 training and mission management for working dogs and handlers.
-      </p>
+        <p>
+          K9 training and mission management for working dogs and handlers.
+        </p>
+      </div>
 
       <img
         className="training-yard-image"
         src={trainingYard}
-        alt="K9 training yard"
+        alt="Working dog training yard with agility equipment and a puppy in a training vest"
       />
 
       {!user && (
@@ -35,6 +37,7 @@ function Home() {
               to="/login"
             >
               <h2>Login</h2>
+
               <p>
                 Return to your working dogs, training, and missions.
               </p>
@@ -45,6 +48,7 @@ function Home() {
               to="/register"
             >
               <h2>Register</h2>
+
               <p>
                 Create an account and start managing your K9 team.
               </p>
@@ -65,6 +69,7 @@ function Home() {
               to="/dogs"
             >
               <h2>Dogs</h2>
+
               <p>
                 View, add, and manage your working dogs.
               </p>
@@ -75,6 +80,7 @@ function Home() {
               to="/training"
             >
               <h2>Training</h2>
+
               <p>
                 Review training categories, commands, and progress.
               </p>
@@ -85,6 +91,7 @@ function Home() {
               to="/missions"
             >
               <h2>Missions</h2>
+
               <p>
                 Plan missions, assign dogs, and check mission weather.
               </p>

@@ -1,33 +1,49 @@
 import { Link } from "react-router-dom";
 
-import lostDog from "../assets/errors/lost-dog.jpg";
+import lostDog from "../assets/errors/lostdog.jpg";
 
 
 function NotFound() {
   return (
-    <section>
-      <h1>404 - Lost K9</h1>
+    <section className="not-found-page">
+      <div className="not-found-poster">
+        <div className="not-found-heading">
+          <p className="not-found-code">
+            404
+          </p>
 
-      <p>
-        Looks like this K9 wandered off the assigned route.
-      </p>
+          <h1>
+            Lost K9!
+          </h1>
+        </div>
 
-      <img
-        className="not-found-image"
-        src={lostDog}
-        alt="Lost K9 holding a leash"
-      />
+        <img
+          className="not-found-image"
+          src={lostDog}
+          alt="Lost black Lab puppy holding a leash"
+        />
 
-      <p>
-        The page you were looking for could not be found.
-      </p>
+        <div className="not-found-copy">
+          <p className="not-found-message">
+            We can't find the page you're looking for.
+          </p>
 
-      <Link
-        className="action-link"
-        to="/"
-      >
-        Return Home
-      </Link>
+          <p className="not-found-submessage">
+            Looks like this trail went cold.
+          </p>
+
+          <Link
+            className="action-link"
+            to="/"
+          >
+            Take Me Home
+          </Link>
+
+          <p className="not-found-hint">
+            Go back or check the URL.
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

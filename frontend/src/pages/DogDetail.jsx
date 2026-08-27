@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/api";
 import BadgeDisplay from "../components/BadgeDisplay";
 
-import malinoisImage from "../assets/dogs/malinois.jpeg";
-import whiteLabImage from "../assets/dogs/white-lab.jpeg";
+import malinoisImage from "../assets/dogs/malinois.jpg";
+import whiteLabImage from "../assets/dogs/white-lab.jpg";
 
 
 function getDogImage(dog) {

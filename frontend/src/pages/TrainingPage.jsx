@@ -25,12 +25,14 @@ function TrainingPage() {
 
   return (
     <section>
-      <h1>K9 Training</h1>
+      <div className="page-header">
+        <h1>K9 Training</h1>
 
-      <p>
-        Build your dog's skills through training before putting those
-        skills to work on missions.
-      </p>
+        <p>
+          Build your dog's skills through training before putting those
+          skills to work on missions.
+        </p>
+      </div>
 
 
       <section>

@@ -45,11 +45,13 @@ function AwardsPage() {
 
   return (
     <section>
-      <h1>Awards</h1>
+      <div className="page-header">
+        <h1>Awards</h1>
 
-      <p>
-        Mission badges earned by your working dogs.
-      </p>
+        <p>
+          Mission badges earned by your working dogs.
+        </p>
+      </div>
 
 
       {loadError && (

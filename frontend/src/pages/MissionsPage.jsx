@@ -75,7 +75,63 @@ function MissionsPage() {
     <section>
       <h1>Missions</h1>
 
+      <p>
+        View and manage your training missions.
+      </p>
+
+
+      <h2>Your Missions</h2>
+
+      {missions.length === 0 ? (
+        <p>
+          No missions created yet. Use the form below to create your first mission.
+        </p>
+      ) : (
+        <div className="card-grid">
+          {missions.map((mission) => (
+            <article key={mission.id}>
+              <h2>
+                <Link to={`/missions/${mission.id}`}>
+                  {mission.title}
+                </Link>
+              </h2>
+
+              <p>
+                {mission.location}
+              </p>
+
+              <p>
+                Date: {mission.mission_date}
+              </p>
+
+              {mission.mission_time && (
+                <p>
+                  Time: {mission.mission_time}
+                </p>
+              )}
+
+              <p>
+                Status:{" "}
+                <span className={`status-pill status-${mission.status}`}>
+                  {mission.status}
+                </span>
+              </p>
+
+              <WeatherPanel
+                location={mission.location}
+                compact
+              />
+            </article>
+          ))}
+        </div>
+      )}
+
+
       <h2>Create Mission</h2>
+
+      <p>
+        Add a new mission and assign a working dog.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <select
@@ -160,45 +216,6 @@ function MissionsPage() {
           Create Mission
         </button>
       </form>
-
-
-      <h2>Your Missions</h2>
-
-      <div className="card-grid">
-        {missions.map((mission) => (
-          <article key={mission.id}>
-            <h2>
-              <Link to={`/missions/${mission.id}`}>
-                {mission.title}
-              </Link>
-            </h2>
-
-            <p>{mission.location}</p>
-
-            <p>
-              Date: {mission.mission_date}
-            </p>
-
-            {mission.mission_time && (
-              <p>
-                Time: {mission.mission_time}
-              </p>
-            )}
-
-            <p>
-              Status:{" "}
-              <span className={`status-pill status-${mission.status}`}>
-                  {mission.status}
-                </span>
-              </p>
-
-            <WeatherPanel
-              location={mission.location}
-              compact
-            />
-          </article>
-        ))}
-      </div>
     </section>
   );
 }

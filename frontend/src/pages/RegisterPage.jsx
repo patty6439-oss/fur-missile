@@ -45,11 +45,13 @@ function Register() {
 
   return (
     <section>
-      <h1>Register</h1>
+      <div className="page-header">
+        <h1>Register</h1>
 
-      <p>
-        Create an account to start managing your K9 team and missions.
-      </p>
+        <p>
+          Create an account to start managing your K9 team and missions.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit}>
         <input

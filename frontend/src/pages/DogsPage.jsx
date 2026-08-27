@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import api from "../api/api";
 
-import malinoisImage from "../assets/dogs/malinois.jpeg";
-import whiteLabImage from "../assets/dogs/white-lab.jpeg";
+import malinoisImage from "../assets/dogs/malinois.jpg";
+import whiteLabImage from "../assets/dogs/white-lab.jpg";
 
 
 const emptyDog = {
@@ -79,9 +79,91 @@ function DogsPage() {
 
   return (
     <section>
-      <h1>Working Dogs</h1>
+      <div className="page-header">
+        <h1>Working Dogs</h1>
+
+        <p>
+          View your working dogs, their roles, and assigned missions.
+        </p>
+      </div>
+
+
+      <h2>Your Working Dogs</h2>
+
+      {dogs.length === 0 ? (
+        <p>
+          No working dogs added yet. Use the form below to add your first dog.
+        </p>
+      ) : (
+        <div className="card-grid">
+          {dogs.map((dog) => {
+            const assignedMissions = missions.filter(
+              (mission) => mission.dog === dog.id
+            );
+
+            return (
+              <article key={dog.id}>
+                {getDogImage(dog) && (
+                  <img
+                    className="dog-image"
+                    src={getDogImage(dog)}
+                    alt={`${dog.name}, ${dog.breed}`}
+                  />
+                )}
+
+                <h2>
+                  <Link to={`/dogs/${dog.id}`}>
+                    {dog.name}
+                  </Link>
+                </h2>
+
+                <p>
+                  {dog.breed} - {dog.role}
+                </p>
+
+                <p>
+                  Gender: {dog.gender === "male" ? "Male" : "Female"}
+                </p>
+
+                <p>
+                  Age: {dog.age}
+                </p>
+
+                <p>
+                  Call sign: {dog.call_sign || "None"}
+                </p>
+
+                {assignedMissions.length > 0 ? (
+                  <div>
+                    <p>
+                      Assigned Missions:
+                    </p>
+
+                    {assignedMissions.map((mission) => (
+                      <p key={mission.id}>
+                        <Link to={`/missions/${mission.id}`}>
+                          {mission.title}
+                        </Link>
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  <p>
+                    No missions assigned.
+                  </p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      )}
+
 
       <h2>Add Working Dog</h2>
+
+      <p>
+        Add a new working dog to your roster.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -114,9 +196,17 @@ function DogsPage() {
           onChange={handleChange}
           required
         >
-          <option value="">Select gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
+          <option value="">
+            Select gender
+          </option>
+
+          <option value="male">
+            Male
+          </option>
+
+          <option value="female">
+            Female
+          </option>
         </select>
 
         <input
@@ -147,67 +237,6 @@ function DogsPage() {
           Add Dog
         </button>
       </form>
-
-
-      <h2>Your Working Dogs</h2>
-
-      <div className="card-grid">
-        {dogs.map((dog) => {
-          const assignedMissions = missions.filter(
-            (mission) => mission.dog === dog.id
-          );
-
-          return (
-            <article key={dog.id}>
-              {getDogImage(dog) && (
-                <img
-                  className="dog-image"
-                  src={getDogImage(dog)}
-                  alt={`${dog.name}, ${dog.breed}`}
-                />
-              )}
-
-              <h2>
-                <Link to={`/dogs/${dog.id}`}>
-                  {dog.name}
-                </Link>
-              </h2>
-
-              <p>
-                {dog.breed} - {dog.role}
-              </p>
-
-              <p>
-                Gender: {dog.gender === "male" ? "Male" : "Female"}
-              </p>
-
-              <p>
-                Age: {dog.age}
-              </p>
-
-              <p>
-                Call sign: {dog.call_sign || "None"}
-              </p>
-
-              {assignedMissions.length > 0 ? (
-                <div>
-                  <p>Assigned Missions:</p>
-
-                  {assignedMissions.map((mission) => (
-                    <p key={mission.id}>
-                      <Link to={`/missions/${mission.id}`}>
-                        {mission.title}
-                      </Link>
-                    </p>
-                  ))}
-                </div>
-              ) : (
-                <p>No missions assigned.</p>
-              )}
-            </article>
-          );
-        })}
-      </div>
     </section>
   );
 }
