@@ -1,10 +1,8 @@
 services:
   db:
     image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: fur_missile
-      POSTGRES_USER: fur_user
-      POSTGRES_PASSWORD: development_password
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
@@ -18,20 +16,21 @@ services:
   backend:
     build:
       context: ./backend
-    environment:
-      DJANGO_SECRET_KEY: development_secret_key
-      DJANGO_DEBUG: "True"
-      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
-      POSTGRES_DB: fur_missile
-      POSTGRES_USER: fur_user
-      POSTGRES_PASSWORD: development_password
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

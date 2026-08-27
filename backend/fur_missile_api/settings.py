@@ -102,9 +102,13 @@ WSGI_APPLICATION = 'fur_missile_api.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "fur_missile"),
+        "USER": os.getenv("POSTGRES_USER", "fur_user"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "development_password"),
+        "HOST": os.getenv("POSTGRES_HOST", "db"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
 
